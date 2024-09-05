@@ -1,3 +1,4 @@
+//! OSCQuery node types and related structures.
 use crate::error::OscQueryError;
 use serde::de::{Error, Visitor};
 use serde::ser::SerializeSeq;

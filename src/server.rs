@@ -1,3 +1,4 @@
+//! An OSC query server, implemented using the axum web framework.
 use crate::node::{HostInfo, OscNode};
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
@@ -15,18 +16,20 @@ use tokio::sync::{RwLock};
 use tokio::sync::oneshot::{Receiver, Sender};
 use tokio::task::JoinHandle;
 
+/// An OSC query server
 pub struct OscQueryServer {
     shutdown: Option<Sender<()>>,
     state: Arc<OscQueryServerState>,
     socket_addr: Option<SocketAddr>,
 }
 
-pub struct OscQueryServerState {
+struct OscQueryServerState {
     host_info: HostInfo,
     root: Arc<RwLock<OscNode>>,
 }
 
 impl OscQueryServer {
+    /// Create a new server with the given host information
     pub fn new(host_info: HostInfo) -> Self {
         Self {
             shutdown: None,
@@ -52,12 +55,14 @@ impl OscQueryServer {
         }
     }
 
+    /// Shut down the server
     pub fn shutdown(&mut self) {
         if let Some(tx) = self.shutdown.take() {
             let _ = tx.send(());
         }
     }
 
+    /// Set the address to bind to
     pub fn with_address(mut self, addr: SocketAddr) -> Self {
         self.socket_addr = Some(addr);
         self
