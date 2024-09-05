@@ -1,4 +1,4 @@
-# `osc-query`
+# `oscquery`
 
 A pure Rust implementation of the [OSC query protocol](https://github.com/Vidvox/OSCQueryProposal) proposal, using
 `tokio` and `axum`.
